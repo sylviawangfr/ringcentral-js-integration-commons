@@ -154,7 +154,11 @@ export default class CallingSettings extends RcModule {
       () => this._rolesAndPermissions.ringoutEnabled,
       () => this._rolesAndPermissions.webphoneEnabled,
       () => this.otherPhoneNumbers.length > 0,
-      (ringoutEnabled, webphoneEnabled, hasOtherPhone) => {
+      () => this._extensionPhoneNumber.numbers.length > 0,
+      (ringoutEnabled, webphoneEnabled, hasOtherPhone, hasExtensionPhoneNumber) => {
+        if (!hasExtensionPhoneNumber) {
+          return [callingOptions.softphone];
+        }
         const callWithOptions = [];
         if (this._webphone && webphoneEnabled) {
           callWithOptions.push(callingOptions.browser);
