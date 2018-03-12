@@ -14,15 +14,15 @@ import callingModes from '../CallingSettings/callingModes';
  */
 @Module({
   deps: [
-    'Auth',
-    'Call',
-    'Webphone',
-    'Contacts',
-    'MessageSender',
-    'MessageStore',
-    'ContactDetails',
-    'CallHistory',
-    'Conference',
+    { dep: 'Auth', optional: true },
+    { dep: 'Call', optional: true },
+    { dep: 'Webphone', optional: true },
+    { dep: 'Contacts', optional: true },
+    { dep: 'MessageSender', optional: true },
+    { dep: 'MessageStore', optional: true },
+    { dep: 'ContactDetails', optional: true },
+    { dep: 'CallHistory', optional: true },
+    { dep: 'Conference', optional: true },
     { dep: 'RouterInteraction', optional: true },
     { dep: 'AnalyticsAdapter', optional: true },
     { dep: 'AnalyticsOptions', optional: true },
@@ -30,6 +30,12 @@ import callingModes from '../CallingSettings/callingModes';
 })
 export default class Analytics extends RcModule {
   constructor({
+    // config
+    analyticsKey,
+    appName,
+    appVersion,
+    brandCode,
+    // modules
     auth,
     call,
     webphone,
@@ -37,10 +43,6 @@ export default class Analytics extends RcModule {
     messageSender,
     adapter,
     routerInteraction,
-    analyticsKey,
-    appName,
-    appVersion,
-    brandCode,
     messageStore,
     contactDetails,
     callHistory,
@@ -51,6 +53,12 @@ export default class Analytics extends RcModule {
       ...options,
       actionTypes
     });
+    // config
+    this._analyticsKey = analyticsKey;
+    this._appName = appName;
+    this._appVersion = appVersion;
+    this._brandCode = brandCode;
+    // modules
     this._auth = auth;
     this._call = call;
     this._webphone = webphone;
@@ -58,14 +66,11 @@ export default class Analytics extends RcModule {
     this._messageSender = messageSender;
     this._adapter = adapter;
     this._router = routerInteraction;
-    this._analyticsKey = analyticsKey;
-    this._appName = appName;
-    this._appVersion = appVersion;
-    this._brandCode = brandCode;
     this._messageStore = messageStore;
     this._contactDetails = contactDetails;
     this._callHistory = callHistory;
     this._conference = conference;
+    // init
     this._reducer = getAnalyticsReducer(this.actionTypes);
     this._segment = Segment();
   }
@@ -334,21 +339,21 @@ export default class Analytics extends RcModule {
 
   _contactDetailClickToSMS(action) {
     if (this._contactDetails
-     && this._contactDetails.actionTypes.clickToSMS === action.type) {
+      && this._contactDetails.actionTypes.clickToSMS === action.type) {
       this.track('Click To SMS (Contact Details)');
     }
   }
 
   _callHistoryClickToDial(action) {
     if (this._callHistory
-     && this._callHistory.actionTypes.clickToCall === action.type) {
+      && this._callHistory.actionTypes.clickToCall === action.type) {
       this.track('Click To dial (Call History)');
     }
   }
 
   _callHistoryClickToSMS(action) {
     if (this._callHistory
-     && this._callHistory.actionTypes.clickToSMS === action.type) {
+      && this._callHistory.actionTypes.clickToSMS === action.type) {
       this.track('Click To SMS (Call History)');
     }
   }

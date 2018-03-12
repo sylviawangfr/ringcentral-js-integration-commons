@@ -63,6 +63,7 @@ function matchWephoneSessionWithAcitveCall(sessions, callItem) {
     'AccountInfo',
     'Storage',
     'DetailedPresence',
+    { dep: 'ContactMatcher', optional: true },
     { dep: 'Webphone', optional: true },
     { dep: 'Call', optional: true },
     { dep: 'ActivityMatcher', optional: true },
